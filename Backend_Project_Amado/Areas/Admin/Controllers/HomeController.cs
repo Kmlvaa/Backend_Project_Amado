@@ -1,5 +1,6 @@
 ﻿using Backend_Project_Amado.Areas.Admin.Models;
 using Backend_Project_Amado.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend_Project_Amado.Areas.Admin.Controllers
@@ -13,6 +14,7 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
         {
             _dbContext = dbContext;
         }
+        [Authorize]
         public IActionResult Index()
         {
             var products = _dbContext.Products.ToList();

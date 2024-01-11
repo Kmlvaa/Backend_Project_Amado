@@ -26,6 +26,12 @@ namespace Backend_Project_Amado.Areas.Admin.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "Role is required!")]
+        public string RoleId { get; set; }
+
+        [ValidateNever]
+        public List<IdentityRole> Roles { get; set; }
+
         [ValidateNever]
         public string ErrorMessage { get; set; }
     }

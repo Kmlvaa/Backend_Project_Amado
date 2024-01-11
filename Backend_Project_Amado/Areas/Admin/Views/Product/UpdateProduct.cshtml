@@ -1,0 +1,62 @@
+﻿@model Backend_Project_Amado.Areas.Admin.Models.ProductAddVM
+@using Backend_Project_Amado.Entities
+@{
+    Layout = "_AccountLayout";
+}
+<!-- Sign In Start -->
+<div class="container-fluid">
+    <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+        <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                <form asp-controller="Account" asp-action="Login" method="post">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <a href="index.html" class="">
+                            <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i></h3>
+                        </a>
+                        <h3>Sign In</h3>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Name" class="form-control" id="floatingInput">
+                        <label for="floatingInput">Product Name</label>
+                        <span asp-validation-for="Name" style="color:red"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="Price" class="form-control" id="floatingPrice" placeholder="Price">
+                        <label for="floatingPassword">Price</label>
+                        <span asp-validation-for="Price" style="color:red"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="Description" class="form-control" id="floatingDescription" placeholder="Description">
+                        <label for="floatingPassword">Description</label>
+                        <span asp-validation-for="Description" style="color:red"></span>
+                    </div>
+                    @* <div class="form-group col-md-4">
+                        <label for="3">Category</label>
+                        <select asp-for="CategoryId" asp-items="@new SelectList(Model.Categories, nameof(Category.Id), nameof(Category.Name))" id="3" class="form-control">
+                            <option disabled selected>Choose category</option>
+                        </select>
+                    </div>
+                    <br />
+                    <div class="form-group col-md-4">
+                        <label for="4">Type</label>
+                        <select asp-for="BrandId" asp-items="@new SelectList(Model.Brands, nameof(Brand.Id), nameof(Brand.Name))" id="4" class="form-control">
+                            <option disabled selected>Choose type</option>
+                        </select>
+                    </div> *@
+                    <br />
+                    <div class="form-group col-md-4">
+                        <label for="5">Type</label>
+                        <input asp-for="Image" type="file" class="form-control img-input" id="5">
+                        <img class="img-preview" />
+                    </div>
+                    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Add</button>
+                    @* @if (!string.IsNullOrWhiteSpace(Model?.ErrorMessage))
+                    {
+                        <span style="color:red">@Model.ErrorMessage</span>
+                    } *@
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sign In End -->
