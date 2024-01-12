@@ -1,4 +1,5 @@
 ﻿using Backend_Project_Amado.Entities;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend_Project_Amado.Models
@@ -16,6 +17,7 @@ namespace Backend_Project_Amado.Models
         public int ZipCode { get; set; }
         public string Comment { get; set; }
         public int CountryId { get; set; }
+        [ValidateNever]
         public List<Country> Countries { get; set; }
     }
 }

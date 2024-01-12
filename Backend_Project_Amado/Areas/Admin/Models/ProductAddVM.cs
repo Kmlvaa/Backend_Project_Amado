@@ -11,7 +11,7 @@ namespace Backend_Project_Amado.Areas.Admin.Models
         public string Name { get; set; }
 
         [DataType(DataType.Currency)]
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
         public string Description { get; set; }
         public bool IsInStock { get; set; }
         public int CategoryId { get; set; }
@@ -20,12 +20,10 @@ namespace Backend_Project_Amado.Areas.Admin.Models
         public int BrandId { get; set; }
         [ValidateNever]
         public List<Brand> Brands { get; set;}
-        [ValidateNever]
         public int? ColorId { get; set; }
 
         [ValidateNever]
         public List<Color> Colors { get; set; }
-
-        public IFormFile Image { get; set; }
+        public List<IFormFile> Files { get; set; }
     }
 }

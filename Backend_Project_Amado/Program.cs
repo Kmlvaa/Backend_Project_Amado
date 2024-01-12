@@ -1,5 +1,6 @@
 using Backend_Project_Amado.Data;
 using Backend_Project_Amado.Entities;
+using Backend_Project_Amado.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using P335_BackEnd.Helper;
@@ -27,6 +28,8 @@ namespace Backend_Project_Amado
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireLowercase = false;
             }).AddEntityFrameworkStores<AppDbContext>();
+
+            builder.Services.AddSingleton<FileService>();
 
             var app = builder.Build();
 

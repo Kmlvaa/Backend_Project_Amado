@@ -14,7 +14,7 @@
             <!-- Newsletter Form -->
             <div class="col-12 col-lg-6 col-xl-5">
                 <div class="newsletter-form mb-100">
-                    <form action="#" method="post">
+                    <form asp-controller="Subscriber" asp-action="Create" method="post">
                         <input asp-for="EmailAddress" class="nl-email" placeholder="Your E-mail">
                         <input type="submit" value="Subscribe">
                     </form>

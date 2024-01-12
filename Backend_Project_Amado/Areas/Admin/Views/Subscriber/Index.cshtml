@@ -19,7 +19,7 @@
                                 @foreach (var sub in Model.Subscribers)
                                 {
                                     <tr>
-                                        <th scope="row">1</th>
+                                        <th scope="row">@sub.Id</th>
                                         <td>@sub.EmailAddress</td>
                                         <td>Member</td>
                                     </tr>
