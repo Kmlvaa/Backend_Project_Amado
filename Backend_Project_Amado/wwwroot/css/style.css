@@ -287,3 +287,8 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+.dynamicImages .dynamicImg{
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+}

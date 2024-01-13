@@ -19,8 +19,34 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
             _appDbContext = appDbContext;
             _fileService = fileService;
         }
+        public IActionResult Index()
+        {
+            var products = _appDbContext.Products.ToList();
 
-        public IActionResult AddProduct()
+            var model = new ProductIndexVM
+            {
+                Products = products
+            };
+            return View(model);
+        }
+        public IActionResult Details(int? id)
+        {
+            if (id is null) return BadRequest();
+
+            Product? product = _appDbContext.Products.Include(x => x.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.Images).ThenInclude(pi => pi.Image)
+                .Include(p => p.Colors).ThenInclude(pi => pi.Color)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (product is null) return NotFound();
+
+            ViewBag.Color = product.Colors?.FirstOrDefault()?.Color?.ColorName;
+
+            return View(product);
+        }
+
+        public IActionResult Add()
         {
             var categories = _appDbContext.Categories.AsNoTracking().ToList();
             var brands = _appDbContext.Brands.AsNoTracking().ToList();
@@ -36,7 +62,7 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult AddProduct(ProductAddVM model)
+        public IActionResult Add(ProductAddVM model)
         {
             if (!ModelState.IsValid)  return View(model);
 
@@ -83,31 +109,53 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
             _appDbContext.Add(product);
             _appDbContext.SaveChanges();
 
-            return View();
+            return RedirectToAction(nameof(Index));
         }
-        public IActionResult UpdateProduct()
+        public IActionResult Edit(int id, ProductAddVM model)
         {
-            return View();
+            if(!ModelState.IsValid) return View(model);
+
+            var products = _appDbContext.Products
+                .Include(x => x.Images)
+                .ThenInclude(x => x.Image)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (products is null) return View();
+
+            products.Name = model.Name;
+            products.Price = model.Price;
+            products.Description = model.Description;
+
+            products.Brand.Name = model.Brands.FirstOrDefault().Name;
+
+            return RedirectToAction(nameof(Index));
         }
         [HttpPost]
-        public IActionResult UpdateProduct(ProductAddVM model)
+        public IActionResult Edit(ProductAddVM model)
         {
-            return View();
+            return RedirectToAction(nameof(Index));
         }
         public IActionResult Delete(int? id)
         {
-            var product = _appDbContext.Products.FirstOrDefault(x => x.Id == id);
-            if (product is null) return View();
+            var foundedProduct = _appDbContext.Products
+                .Include(x => x.Images)
+                .ThenInclude(x => x.Image)
+                .FirstOrDefault(x => x.Id == id);
 
-            var foundedproduct = product.Images.FirstOrDefault(x => x.ProductId == id);
-            if (foundedproduct is null) return NotFound();
+            if (foundedProduct is null) return NotFound();
 
-            var image = _appDbContext.Images.FirstOrDefault(x => x.Id == foundedproduct.ImageId);
+            if (foundedProduct.Images is not null)
+            {
+                foreach (var image in foundedProduct.Images)
+                {
+                    if (image.Image != null)
+                    {
+                        _fileService.DeleteFile(image.Image.Url, Path.Combine("img", "product-img"));
+                    }
+                }
+            }
 
-            _fileService.DeleteFile(image.Url, Path.Combine("img", "product"));
-
-            _appDbContext.Remove(product);      
-            _appDbContext.Remove(image);
+            _appDbContext.Products.Remove(foundedProduct); 
 
             _appDbContext.SaveChanges();
 

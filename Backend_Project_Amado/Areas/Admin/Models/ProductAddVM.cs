@@ -13,6 +13,7 @@ namespace Backend_Project_Amado.Areas.Admin.Models
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
         public string Description { get; set; }
+        public bool InStock { get; set; }
         public bool IsInStock { get; set; }
         public int CategoryId { get; set; }
         [ValidateNever]

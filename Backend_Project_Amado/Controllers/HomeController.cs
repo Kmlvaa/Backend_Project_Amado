@@ -19,6 +19,7 @@ namespace Backend_Project_Amado.Controllers
             var products = _dbContext.Products.ToList();
             var images = _dbContext.Images.ToList();
             var productImages = _dbContext.ProductsImage.ToList();
+
             var model = new HomeIndexVM
             { 
                 Products = products,

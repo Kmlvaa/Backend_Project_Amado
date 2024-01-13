@@ -37,10 +37,11 @@ namespace Backend_Project_Amado.Services
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("wwwroot", targetDirectory, fileName));
 
-            //if (!Path.Exists(path)) return;
+            if (!File.Exists(path)) return;
 
             File.Delete(path);
         }
+
     }
 }
 

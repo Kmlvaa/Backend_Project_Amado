@@ -1,8 +1,17 @@
 const imgInput = document.querySelector('.img-input');
-const imgPreview = document.querySelector('.img-preview');
+const dynamicImages = document.querySelector('.dynamicImages');
 
 imgInput.addEventListener('change', (e) => {
-    let img = e.target.files[0]
-    let blobUrl = URL.createObjectURL(img)
-    imgPreview.setAttribute('src', blobUrl)
+    let files = e.target.files;
+    dynamicImages.innerHTML = '';
+
+    for (const file in files) {
+        const img = document.createElement("img");
+
+        const blobUrl = URL.createObjectURL(file);
+
+        img.setAttribute('src', blobUrl);
+
+        dynamicImages.appendChild(img);
+    }
 })

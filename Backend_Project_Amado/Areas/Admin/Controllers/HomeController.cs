@@ -17,17 +17,7 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            var products = _dbContext.Products.ToList();
-            var categories = _dbContext.Categories.ToList();
-            var brands = _dbContext.Brands.ToList();
-
-            var model = new HomeIndexVM 
-            { 
-                Products = products,
-                Categories = categories,
-                Brands = brands
-            };
-            return View(model);
+           return View();
         }
     }
 }

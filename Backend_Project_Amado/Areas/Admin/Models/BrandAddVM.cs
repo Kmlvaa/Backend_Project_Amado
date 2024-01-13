@@ -2,5 +2,7 @@
 {
     public class BrandAddVM
     {
+        public int Id { get; set; }
+        public string Brand { get; set; }
     }
 }

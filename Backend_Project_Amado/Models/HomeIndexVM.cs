@@ -7,5 +7,6 @@ namespace Backend_Project_Amado.Models
         public List<Product> Products { get; set; }
         public List<Images> Images { get; set; }
         public List<ProductImage> ProductImages { get; set; }
+        public string ImgUrl { get; set; }
     }
 }
