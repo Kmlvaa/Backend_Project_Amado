@@ -6,7 +6,7 @@
 <!-- Sign In Start -->
 <div class="container-fluid">
     <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
-        <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+        <div class="col-12 col-sm-8 col-md-6">
             <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
                 <form asp-controller="Product" asp-action="Add" method="post" enctype="multipart/form-data">
                     <h3>Add Product</h3>
@@ -32,19 +32,19 @@
                     </div>
                     <div class="form-group">
                         <label for="3">Select Category</label>
-                        <select asp-for="CategoryId" asp-items="@new SelectList(Model.Categories, nameof(Category.Id), nameof(Category.Name))" id="3" class="form-control" id="exampleFormControlSelect1">
+                        <select asp-for="CategoryId" asp-items="@new SelectList(Model.Categories, nameof(Category.Id), nameof(Category.Name))" class="form-control" id="exampleFormControlSelect1">
                             <option disabled selected>Choose category</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="4">Select Brand</label>
-                        <select asp-for="BrandId" asp-items="@new SelectList(Model.Brands, nameof(Brand.Id), nameof(Brand.Name))" id="4" class="form-control" id="exampleFormControlSelect2">
+                        <select asp-for="BrandId" asp-items="@new SelectList(Model.Brands, nameof(Brand.Id), nameof(Brand.Name))" class="form-control" id="exampleFormControlSelect2">
                             <option disabled selected>Choose type</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="4">Select Color</label>
-                        <select asp-for="ColorId" asp-items="@new SelectList(Model.Colors, nameof(Color.Id), nameof(Color.ColorName))" id="4" class="form-control" id="exampleFormControlSelect2">
+                        <select asp-for="ColorId" asp-items="@new SelectList(Model.Colors, nameof(Color.Id), nameof(Color.ColorName))" class="form-control" id="exampleFormControlSelect3">
                             <option disabled selected>Choose type</option>
                         </select>
                     </div>
@@ -54,10 +54,10 @@
                         <div class="dynamicImages"></div>
                     </div>
                     <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Add</button>
-                    @* @if (!string.IsNullOrWhiteSpace(Model?.ErrorMessage))
+                    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
                     {
                     <span style="color:red">@Model.ErrorMessage</span>
-                    } *@
+                    }
                 </form>
             </div>
         </div>

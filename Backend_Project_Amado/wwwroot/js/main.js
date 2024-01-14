@@ -210,5 +210,14 @@
     
 })(jQuery);
 
+    var navbar = document.querySelector(".navbar-nav");
+    var activeLink = document.querySelectorAll(".nav-link");
+
+foreach(link in activeLink) {
+    link.AddEventListener('click', (e) => {
+
+    })
+}
+
 
 

@@ -14,7 +14,6 @@ namespace Backend_Project_Amado.Areas.Admin.Models
         public decimal Price { get; set; }
         public string Description { get; set; }
         public bool InStock { get; set; }
-        public bool IsInStock { get; set; }
         public int CategoryId { get; set; }
         [ValidateNever]
         public List<Category> Categories { get; set; }
@@ -26,5 +25,7 @@ namespace Backend_Project_Amado.Areas.Admin.Models
         [ValidateNever]
         public List<Color> Colors { get; set; }
         public List<IFormFile> Files { get; set; }
+        [ValidateNever]
+        public string ErrorMessage { get; set; }
     }
 }
