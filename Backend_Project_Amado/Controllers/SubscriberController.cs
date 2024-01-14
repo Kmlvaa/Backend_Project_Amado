@@ -15,6 +15,10 @@ namespace Backend_Project_Amado.Controllers
         {
             _dbContext = dbContext;
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
         [HttpPost]
         public IActionResult Create(SubscribersComponentVM model)
         {
@@ -28,7 +32,7 @@ namespace Backend_Project_Amado.Controllers
             _dbContext.Add(subscriber);
             _dbContext.SaveChanges();
 
-            return RedirectToAction(nameof(Create));
+            return View();
         }
     }
 }

@@ -1,0 +1,9 @@
+﻿﻿@using Backend_Project_Amado.Entities
+@model List<Product>
+
+<ul class="list-group">
+    @foreach (var product in Model)
+    {
+        <li class="list-group-item"><a asp-controller="Shop" asp-action="ProductDetails" asp-route-id="@product.Id" style="color: black;">@product.Name</a></li>
+    }
+</ul>

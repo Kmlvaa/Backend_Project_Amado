@@ -26,10 +26,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="search-content">
-                        <form action="#" method="get">
-                            <input type="search" name="search" id="search" placeholder="Type your keyword...">
+                        <form asp-controller="Shop" asp-action="Search">
+                            <input class="search-input" id="search" placeholder="Search...">
                             <button type="submit"><img src="img/core-img/search.png" alt=""></button>
                         </form>
+                        <div class="search-result"></div>
                     </div>
                 </div>
             </div>
@@ -67,7 +68,6 @@
                 <ul>
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-controller="Shop" asp-action="Index">Shop</a></li>
-                    <li><a asp-controller="Shop" asp-action="ProductDetails">Product</a></li>
                     <li><a asp-controller="Pages" asp-action="Cart">Cart</a></li>
                     <li class="active"><a asp-controller="Pages" asp-action="Checkout">Checkout</a></li>
                 </ul>
@@ -163,6 +163,7 @@
     <script src="~/js/plugins.js"></script>
     <!-- Active js -->
     <script src="~/js/active.js"></script>
+    <script src="~/js/Search.js"></script>
     @RenderSection("Scripts", false)
 </body>
 </html>

@@ -3,6 +3,7 @@ const searchResult = document.querySelector(".search-result")
 let cachedSearchValue;
 
 searchInput.addEventListener('keyup', (e) => {
+    console.log("Hello")
     const value = e.target.value.trim();
     if (value.length < 3) {
         cachedSearchValue = null
@@ -15,7 +16,7 @@ searchInput.addEventListener('keyup', (e) => {
 })
 
 function renderSearchResult(searchValue) {
-    fetch(`https://localhost:7246/shop/search?input=${searchValue}`)
+    fetch(`http://localhost:7172/Shop/search?input=${searchValue}`)
         .then(x => x.text())
         .then(x => {
             searchResult.innerHTML = ''
