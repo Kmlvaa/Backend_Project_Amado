@@ -4,6 +4,7 @@ using Backend_Project_Amado.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.ContentModel;
+using System.Text.Json;
 
 namespace Backend_Project_Amado.Controllers
 {
@@ -17,8 +18,95 @@ namespace Backend_Project_Amado.Controllers
         }
         public IActionResult Cart()
         {
-            return View();
+            Request.Cookies.TryGetValue("basket", out var basketSerialized);
+
+            Basket basket = null!;
+            if (basketSerialized is null)
+            {
+                basket = new Basket();
+            }
+            else
+            {
+                basket = JsonSerializer.Deserialize<Basket>(basketSerialized)!;
+            }
+
+            List<(BasketItem, Product)> items = new();
+
+            foreach (var basketItem in basket.BasketItems)
+            {
+                Product product = _dbContext.Products?.Include(p => p.Images).ThenInclude(p => p.Image).FirstOrDefault(x => x.Id == basketItem.ProductId)!;
+
+                items.Add(new(basketItem, product));
+            }
+            var model = new PagesCartVM
+            {
+                Items = items
+            };
+
+            return View(model);
+
         }
+        public IActionResult AddToBasket(int? id)
+        {
+            if (id is null) return NotFound();
+
+            var foundProduct = _dbContext.Products.FirstOrDefault(x => x.Id == id);
+
+            if (foundProduct is null) return NotFound();
+
+            Request.Cookies.TryGetValue("basket", out var basketSerialized);
+
+            Basket basket = null!;
+            if (basketSerialized is null)
+            {
+                basket = new Basket();
+            }
+            else
+            {
+                basket = JsonSerializer.Deserialize<Basket>(basketSerialized)!;
+            }
+            var foundBasketItem = basket.BasketItems.FirstOrDefault(x => x.ProductId == foundProduct.Id);
+
+            if (foundBasketItem is null)
+            {
+                foundBasketItem = new BasketItem
+                {
+                    ProductId = foundProduct.Id,
+                    Count = 1
+                };
+
+                basket.BasketItems.Add(foundBasketItem);
+            }
+            else
+            {
+                foundBasketItem.Count++;
+            }
+
+            Response.Cookies.Append("basket", JsonSerializer.Serialize(basket));
+
+            return RedirectToAction("Index", "Basket");
+        }
+        public IActionResult DeleteFromBasket(int? id)
+        {
+            if (id is null) return NotFound();
+
+            Request.Cookies.TryGetValue("basket", out var basketSerialized);
+
+            if (basketSerialized is null) return RedirectToAction("Index", "Home");
+
+            var basket = JsonSerializer.Deserialize<Basket>(basketSerialized)!;
+
+            var foundBasketItem = basket.BasketItems.FirstOrDefault(x => x.ProductId == id);
+
+            if (foundBasketItem is null) return NotFound();
+
+            basket.BasketItems.Remove(foundBasketItem);
+
+            Response.Cookies.Append("basket", JsonSerializer.Serialize(basket));
+
+            return RedirectToAction("Index", "Basket");
+        }
+
         public IActionResult Checkout()
         {
             var countries = _dbContext.Countries.AsNoTracking().ToList();

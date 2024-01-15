@@ -95,6 +95,49 @@ namespace Backend_Project_Amado.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Backend_Project_Amado.Entities.Basket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Baskets");
+                });
+
+            modelBuilder.Entity("Backend_Project_Amado.Entities.BasketItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("BasketId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BasketId");
+
+                    b.ToTable("BasketItems");
+                });
+
             modelBuilder.Entity("Backend_Project_Amado.Entities.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -489,6 +532,13 @@ namespace Backend_Project_Amado.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Backend_Project_Amado.Entities.BasketItem", b =>
+                {
+                    b.HasOne("Backend_Project_Amado.Entities.Basket", null)
+                        .WithMany("BasketItems")
+                        .HasForeignKey("BasketId");
+                });
+
             modelBuilder.Entity("Backend_Project_Amado.Entities.Checkout", b =>
                 {
                     b.HasOne("Backend_Project_Amado.Entities.Country", "Country")
@@ -606,6 +656,11 @@ namespace Backend_Project_Amado.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Backend_Project_Amado.Entities.Basket", b =>
+                {
+                    b.Navigation("BasketItems");
                 });
 
             modelBuilder.Entity("Backend_Project_Amado.Entities.Brand", b =>

@@ -54,9 +54,18 @@
                     <div class="form-group">
                         <label for="5">Image</label>
                         <input asp-for="Files" multiple type="file" class="form-control img-input" id="files">
-                        <div class="dynamicImages"></div>
+                        
+                        <div class="dynamicImages">
+                            @foreach (var img in Model.CurrentImage)
+                            {
+                                <div class="img-preview" style="display:flex; flex-direction: column">
+                                    <img src="~/img/product-img/@img" style="width:140px; height: 140px;" />
+                                    @* <a class="delete-img-btn"><i class="fa-solid fa-circle-xmark" style="color: #e71d1d; position: absolute;top: 0; right: 0"></i></a> *@
+                                </div>
+                            }
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Add</button>
+                    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Edit</button>
                 </form>
             </div>
         </div>

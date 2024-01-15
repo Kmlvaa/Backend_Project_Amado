@@ -25,7 +25,9 @@ namespace Backend_Project_Amado.Areas.Admin.Models
 
         [ValidateNever]
         public List<Color> Colors { get; set; }
+        [ValidateNever]
         public List<IFormFile> Files { get; set; }
+        [ValidateNever]
         public List<string> CurrentImage { get; set; }
     }
 }

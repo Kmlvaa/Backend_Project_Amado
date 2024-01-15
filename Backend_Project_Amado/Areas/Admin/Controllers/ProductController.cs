@@ -5,6 +5,7 @@ using Backend_Project_Amado.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
+using System.Security.Policy;
 
 namespace Backend_Project_Amado.Areas.Admin.Controllers
 {
@@ -140,6 +141,7 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
                 CurrentImage = currentImageUrls
             };
 
+
             return View(updatedModel);
         }
         [HttpPost]
@@ -189,7 +191,26 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
                     ColorId = model.ColorId
                 }
             };
+            if(model.Files != null)
+            {
+                var URLs = _fileService.AddFile(model.Files, Path.Combine("img", "product-img"));
+                var productImage = _appDbContext.ProductsImage.FirstOrDefault(x => x.ProductId == product.Id);
 
+                var images = _appDbContext.Images.FirstOrDefault(x => x.Id == productImage.ImageId);
+                foreach (var file in URLs)
+                {
+                    images.Url = file;
+                }
+                product.Images = URLs.Select(url => new ProductImage
+                {
+                    Image = new Images
+                    {
+                        Url = url,
+                    }
+                }).ToList();
+            }
+
+            _appDbContext.Update(product);
             _appDbContext.SaveChanges();
 
             return RedirectToAction(nameof(Index));

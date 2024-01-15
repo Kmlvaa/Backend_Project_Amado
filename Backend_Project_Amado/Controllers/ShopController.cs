@@ -19,7 +19,18 @@ namespace Backend_Project_Amado.Controllers
             if (page <= 1) page = 1;
             int ProductsPerPage = view;
 
+            int startPoint = 1;
+            int endPoint = view;
+
+            if(page > 1)
+            {
+                startPoint = (page - 1) * view;
+                endPoint = page * view;
+            }
+
             string categoryName = category;
+
+            var filtered = _dbContext.Products.FirstOrDefault(x => x.Category.Name == categoryName);
 
             var productCount = _dbContext.Products.Count();
             var totalPageCount = (int)Math.Ceiling((decimal)productCount / ProductsPerPage);
@@ -30,7 +41,6 @@ namespace Backend_Project_Amado.Controllers
                 "asc" => _dbContext.Products.OrderBy(x => x.Id),
                 _ => _dbContext.Products.OrderByDescending(x => x.Id)
             };
-            products = (IOrderedQueryable<Product>)_dbContext.Products.FirstOrDefault(x => x.Category.Name == categoryName);
 
             ViewData["OrderById"] = string.IsNullOrEmpty(order) ? "desc" : "asc";
 
@@ -49,16 +59,37 @@ namespace Backend_Project_Amado.Controllers
                 Categories = categories,
                 Brands = brands,
                 Colors = colors,
-                ProductCountPerPage = view
+                ProductCountPerPage = view,
+                StartPoint = startPoint,
+                EndPoint = endPoint,
+                ProductCount = productCount
             };
 
             ViewBag.Order = order;
 
             return View(model);
         }
-        public IActionResult ProductDetails()
+        public IActionResult ProductDetails(int? id)
         {
-            return View();
+            if (id is null) return NotFound();
+
+            Product? product = _dbContext.Products
+                .Include(x => x.Images).ThenInclude(x => x.Image)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (product is null) return NotFound();
+
+            var category = _dbContext.Categories.FirstOrDefault(x => x.Id == product.CategoryId);
+            var brand = _dbContext.Brands.FirstOrDefault(x => x.Id == product.BrandId);
+
+            ShopIndexVM model = new()
+            {
+                Product = product,
+                CategoryName = category.Name,
+                BrandName = category.Name,
+            };
+
+            return View(model);
         }
         public IActionResult Search(string? input)
         {
