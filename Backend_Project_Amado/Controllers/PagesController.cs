@@ -40,7 +40,8 @@ namespace Backend_Project_Amado.Controllers
             }
             var model = new PagesCartVM
             {
-                Items = items
+                Items = items,
+                Count = items.Count()
             };
 
             return View(model);
@@ -84,7 +85,7 @@ namespace Backend_Project_Amado.Controllers
 
             Response.Cookies.Append("basket", JsonSerializer.Serialize(basket));
 
-            return RedirectToAction("Index", "Basket");
+            return RedirectToAction("Index", "Shop");
         }
         public IActionResult DeleteFromBasket(int? id)
         {
@@ -104,7 +105,7 @@ namespace Backend_Project_Amado.Controllers
 
             Response.Cookies.Append("basket", JsonSerializer.Serialize(basket));
 
-            return RedirectToAction("Index", "Basket");
+            return RedirectToAction("Cart", "Pages");
         }
 
         public IActionResult Checkout()

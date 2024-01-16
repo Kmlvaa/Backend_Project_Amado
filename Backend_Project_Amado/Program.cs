@@ -30,6 +30,7 @@ namespace Backend_Project_Amado
             }).AddEntityFrameworkStores<AppDbContext>();
 
             builder.Services.AddSingleton<FileService>();
+            builder.Services.AddTransient<IMailService, MailService>();
 
             var app = builder.Build();
 

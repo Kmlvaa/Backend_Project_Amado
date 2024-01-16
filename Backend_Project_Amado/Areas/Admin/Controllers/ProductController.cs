@@ -2,6 +2,7 @@
 using Backend_Project_Amado.Data;
 using Backend_Project_Amado.Entities;
 using Backend_Project_Amado.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
@@ -47,6 +48,7 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add(ProductAddVM model)
         {
             if (!ModelState.IsValid)
@@ -138,13 +140,19 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
                 Brands = brands,
                 Colors = colors,
                 ColorId = product.Colors.FirstOrDefault().ColorId,
-                CurrentImage = currentImageUrls
+                CurrentImage = currentImageUrls,
+                AllImages = product.Images?.Select(p => new Images
+                {
+                    Id = p.Image.Id,
+                    Url = p.Image.Url
+                }).ToList() ?? new List<Images>()
             };
 
 
             return View(updatedModel);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(ProductEditVM model)
         {
             if (!ModelState.IsValid)
@@ -193,28 +201,39 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
             };
             if(model.Files != null)
             {
-                var URLs = _fileService.AddFile(model.Files, Path.Combine("img", "product-img"));
-                var productImage = _appDbContext.ProductsImage.FirstOrDefault(x => x.ProductId == product.Id);
-
-                var images = _appDbContext.Images.FirstOrDefault(x => x.Id == productImage.ImageId);
-                foreach (var file in URLs)
-                {
-                    images.Url = file;
-                }
-                product.Images = URLs.Select(url => new ProductImage
+                var newImageUrls = _fileService.AddFile(model.Files, Path.Combine("img", "product-img"));
+                List<ProductImage> newImg = newImageUrls.Select(imageUrl => new ProductImage
                 {
                     Image = new Images
                     {
-                        Url = url,
+                        Url = imageUrl
                     }
                 }).ToList();
+
+                product.Images.AddRange(newImg);
+
+            }
+            if (model.DeletedImageIds != null && model.DeletedImageIds.Any())
+            {
+                foreach (var deletedImageId in model.DeletedImageIds)
+                {
+                    Images imageToDelete = _appDbContext.Images.FirstOrDefault(i => i.Id == deletedImageId);
+                    if (imageToDelete != null)
+                    {
+                        var imagePath = Path.Combine("img", "product-img", imageToDelete.Url);
+                        _fileService.DeleteFile(imageToDelete.Url, imagePath);
+
+                        _appDbContext.Images.Remove(imageToDelete);
+                    }
+                }
+
             }
 
-            _appDbContext.Update(product);
             _appDbContext.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int? id)
         {
             var foundedProduct = _appDbContext.Products

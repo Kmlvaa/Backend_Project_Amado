@@ -56,12 +56,17 @@
                         <input asp-for="Files" multiple type="file" class="form-control img-input" id="files">
                         
                         <div class="dynamicImages">
-                            @foreach (var img in Model.CurrentImage)
+                            @for (int i = 0; i < Model.AllImages.Count; i++)
                             {
-                                <div class="img-preview" style="display:flex; flex-direction: column">
-                                    <img src="~/img/product-img/@img" style="width:140px; height: 140px;" />
-                                    @* <a class="delete-img-btn"><i class="fa-solid fa-circle-xmark" style="color: #e71d1d; position: absolute;top: 0; right: 0"></i></a> *@
+                                var imagePath = Model.AllImages[i];
+                                <div class="img-preview">
+                                    <img src="~/img/product-img/@imagePath.Url" style="width:200px" />
+                                    @if (imagePath != null)
+                                    {
+                                        <a href="#" class="delete-btn btn btn-danger" data-imageid="@imagePath.Id">Delete Image</a>
+                                    }
                                 </div>
+                                <input type="hidden" name="ImagesId" value="@imagePath.Id" />
                             }
                         </div>
                     </div>
@@ -73,5 +78,5 @@
 </div>
 <!-- Sign In End -->
 @section Scripts{
-    <script src="~/js/ProductAdd.js"></script>
+    <script src="~/js/productEdit.js"></script>
 }

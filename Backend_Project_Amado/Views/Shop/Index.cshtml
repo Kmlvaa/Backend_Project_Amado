@@ -9,10 +9,12 @@
                 <!--  Catagories  -->
                 <div class="catagories-menu">
                     <ul style="padding-left: 0">
+                    <form asp-controller="Shop" asp-action="Filter">
                         @foreach(var cat in Model.Categories)
                         {
-                            <li @* class="active" *@><a class="@cat.Name" asp-action="Index" asp-route-category="@cat.Name" asp-route-order="desc" asp-route-page="@Model.CurrentPage" asp-route-view="@Model.ProductCountPerPage">@cat.Name</a></li>
+                            <li class="title-link"><a class="@cat.Name" asp-route-categoryId="@cat.Id" asp-route-page="@Model.CurrentPage" asp-route-view="@Model.ProductCountPerPage">@cat.Name</a></li>
                         }
+                    </form>
                     </ul>
                 </div>
             </div>
@@ -23,14 +25,16 @@
                 <h6 class="widget-title mb-30">Brands</h6>
 
                 <div class="widget-desc">
+                    <form asp-controller="Shop" asp-action="Filter">
                     <!-- Single Form Check -->
                     @foreach(var brand in Model.Brands)
                     {
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="@brand.Name">
-                            <label class="form-check-label" for="@brand.Name">@brand.Name</label>
+                            <input class="form-check-input" type="checkbox" value="" id="@brand.Name" asp-action="Filter" asp-route-brandId="@brand.Id" asp-route-page="@Model.CurrentPage" asp-route-view="@Model.ProductCountPerPage">
+                            <label class="form-check-label brand-link" for="@brand.Name">@brand.Name</label>
                         </div>
                     }
+                    </form>
                 </div>
             </div>
 
@@ -40,12 +44,14 @@
                 <h6 class="widget-title mb-30">Color</h6>
 
                 <div class="widget-desc">
+                    <form asp-controller="Shop" asp-action="Filter">
                     <ul class="d-flex" style="padding-left: 0">
                         @foreach(var color in Model.Colors)
                         {
-                            <li><a href="#" class="@color.ColorName"></a></li>
+                            <li class="color-link"><a class="@color.ColorName" asp-action="Filter" asp-route-brandId="@color.Id" asp-route-page="@Model.CurrentPage" asp-route-view="@Model.ProductCountPerPage"></a></li>
                         }
                     </ul>
+                    </form>
                 </div>
             </div>
 
@@ -110,7 +116,7 @@
                 </div>
             </div>
 
-                <div class="row">
+        <div class="row" id="partials">
                     <!-- Single Product Area -->
             @foreach(var product in Model.Products)
             {
@@ -143,7 +149,7 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                             </div>
                             <div class="cart">
-                                    <a asp-controller="Pages" asp-action="AddToBasket" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="img/core-img/cart.png" alt=""></a>
+                                    <a asp-controller="Pages" asp-action="AddToBasket" asp-route-id="@product.Id" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="img/core-img/cart.png" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -170,4 +176,5 @@
   </div>
 @section Scripts{
     <script src="~/js/ShopPagination.js"></script>
+    <script src="~/js/ActiveLine.js"></script>
 }

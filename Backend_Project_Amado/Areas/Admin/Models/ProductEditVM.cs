@@ -1,6 +1,7 @@
 ﻿using Backend_Project_Amado.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend_Project_Amado.Areas.Admin.Models
 {
@@ -29,5 +30,10 @@ namespace Backend_Project_Amado.Areas.Admin.Models
         public List<IFormFile> Files { get; set; }
         [ValidateNever]
         public List<string> CurrentImage { get; set; }
+        public List<int> DeletedImageIds { get; set; }
+        [NotMapped]
+        public List<int>? ImagesId { get; set; }
+        [NotMapped]
+        public List<Images>? AllImages { get; set; }
     }
 }

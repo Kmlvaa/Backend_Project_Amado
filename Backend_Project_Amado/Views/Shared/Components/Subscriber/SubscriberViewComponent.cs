@@ -9,7 +9,8 @@ namespace Backend_Project_Amado.Views.Shared.Components.Subscribers
     {
         public IViewComponentResult Invoke()
         {
-            return View();
+            var model = new SubscribersComponentVM();
+            return View(model);
         }
     }
 }

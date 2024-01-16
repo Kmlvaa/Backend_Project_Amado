@@ -24,6 +24,14 @@ namespace Backend_Project_Amado.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
+            bool isDuplicated = _dbContext.Subscribers
+                                .Any(c => c.EmailAddress == model.EmailAddress);
+
+            if (isDuplicated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var subscriber = new Subscriber
             {
                 EmailAddress = model.EmailAddress
@@ -32,7 +40,7 @@ namespace Backend_Project_Amado.Controllers
             _dbContext.Add(subscriber);
             _dbContext.SaveChanges();
 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

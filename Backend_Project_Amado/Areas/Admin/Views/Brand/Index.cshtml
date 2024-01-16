@@ -26,7 +26,6 @@
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
                                 <tr class="text-white">
-                                    <th scope="col"><input class="form-check-input" type="checkbox"></th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -35,7 +34,6 @@
                                 @foreach (var brand in Model.Brands)
                                 {
                                     <tr>
-                                        <td><input class="form-check-input" type="checkbox"></td>
                                         <td>@brand.Name</td>
                                         <td>
                                             <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@brand.Id">Edit</a>

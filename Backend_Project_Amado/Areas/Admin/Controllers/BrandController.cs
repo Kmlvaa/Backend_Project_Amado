@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend_Project_Amado.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
     public class BrandController : Controller
     {
         private AppDbContext _dbContext;
@@ -30,9 +29,10 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add(BrandAddVM model)
         {
-            if (ModelState.IsValid) return NotFound();
+            if (!ModelState.IsValid) return NotFound();
             var brand = new Brand();
 
             brand.Name = model.Brand;
@@ -54,27 +54,29 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult Edit(int id, BrandAddVM editedBrand)
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(int id, BrandAddVM model)
         {
-            if (ModelState.IsValid) return NotFound();
+            if (!ModelState.IsValid) return NotFound();
 
-            if (id != editedBrand.Id) return BadRequest();
+            if (id != model.Id) return BadRequest();
 
             var brand = _dbContext.Brands.FirstOrDefault(x => x.Id == id);
 
             if (brand is null) return NotFound();
 
-            bool duplicate = _dbContext.Brands.Any(c => c.Name == editedBrand.Brand && editedBrand.Brand != brand.Name);
+            bool duplicate = _dbContext.Brands.Any(c => c.Name == model.Brand && model.Brand != brand.Name);
             if (duplicate)
             {
                 ModelState.AddModelError("", "You cannot duplicate category name");
                 return View(brand);
             }
-            brand.Name = editedBrand.Brand;
+            brand.Name = model.Brand;
             _dbContext.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var foundBrand = _dbContext.Brands.FirstOrDefault(x => x.Id == id);

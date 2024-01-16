@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend_Project_Amado.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
     public class CategoryController : Controller
     {
         public AppDbContext _dbContext;
@@ -33,9 +32,10 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add(CategoryAddVM model)
         {
-            if (ModelState.IsValid) return NotFound();
+            if (!ModelState.IsValid) return NotFound();
 
             var category = new Category();
 
@@ -58,9 +58,10 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id, CategoryAddVM editedCategory)
         {
-            if (ModelState.IsValid) return NotFound();
+            if (!ModelState.IsValid) return NotFound();
 
             if (id != editedCategory.Id) return BadRequest();
 
@@ -79,6 +80,7 @@ namespace Backend_Project_Amado.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var foundCategory = _dbContext.Categories.FirstOrDefault(c => c.Id == id);

@@ -3,7 +3,6 @@ const dynamicImages = document.querySelector('.dynamicImages');
 
 imgInput.addEventListener('change', (e) => {
 
-    dynamicImages.innerHTML = ''
     for (const file of e.target.files) {
         const imgDiv = document.createElement('div');
         imgDiv.setAttribute('class', 'img-preview');
@@ -21,4 +20,28 @@ imgInput.addEventListener('change', (e) => {
 
         dynamicImages.appendChild(imgDiv);
     }
+});
+const deleteButtons = document.querySelectorAll('.delete-btn');
+
+deleteButtons.forEach((deleteBtn) => {
+    deleteBtn.addEventListener('click', (e) => {
+        const imgPreview = deleteBtn.previousElementSibling;
+
+        imgPreview.src = null;
+        imgPreview.remove();
+
+        deleteBtn.remove();
+    });
+});
+
+$(document).ready(function () {
+    $('.delete-btn').on('click', function () {
+        var imageId = $(this).data('imageid');
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'DeletedImageIds',
+            value: imageId
+        }).appendTo('form');
+        $(this).closest('.img-preview').remove();
+    });
 });

@@ -42,8 +42,6 @@ namespace Backend_Project_Amado.Controllers
                 _ => _dbContext.Products.OrderByDescending(x => x.Id)
             };
 
-            ViewData["OrderById"] = string.IsNullOrEmpty(order) ? "desc" : "asc";
-
             var categories = _dbContext.Categories.AsNoTracking().ToList();
             var brands = _dbContext.Brands.AsNoTracking().ToList();
             var colors = _dbContext.Colors.AsNoTracking().ToList();
@@ -68,6 +66,50 @@ namespace Backend_Project_Amado.Controllers
             ViewBag.Order = order;
 
             return View(model);
+        }
+        public IActionResult Filter(int categoryId = 0, int brandId = 0, int colorId = 0, int page = 1, string order = "desc", int view = 4)
+        {
+            int productsPerPage = view;
+
+            IQueryable<Product> allProducts = _dbContext.Products
+                .Include(x => x.Images).ThenInclude(x => x.Image)
+                .Include(x => x.Category)
+                .Include(x => x.Brand)
+                .Include(x => x.Colors).ThenInclude(x => x.Color);
+
+            if (page <= 0) page = 1;
+
+            if (categoryId == 0 && brandId == 0 && colorId == 0)
+            {
+                var products = allProducts
+                    .Skip((page - 1) * productsPerPage)
+                    .Take(productsPerPage)
+                    .ToList();
+
+                var model = new ShopIndexVM
+                {
+                    Products = products,
+                };
+
+                return View(model);
+            }
+
+            var sortedProducts = allProducts
+               .Where(x => (x.CategoryId == categoryId)
+               && (x.BrandId == brandId)
+               && (x.Colors.FirstOrDefault().Id == colorId)
+               ).ToList();
+
+            var totalPageCount = (int)Math.Ceiling((double)allProducts.Count() / productsPerPage);
+
+            var sortedModel = new ShopIndexVM
+            {
+                Products = sortedProducts,
+                TotalPageCount = totalPageCount,
+                CurrentPage = page
+            };
+
+            return View(sortedModel);
         }
         public IActionResult ProductDetails(int? id)
         {

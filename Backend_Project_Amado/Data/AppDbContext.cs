@@ -25,7 +25,5 @@ namespace Backend_Project_Amado.Data
         public DbSet<ProductColor> ProductsColor { get; set; }
         public DbSet<ProductImage> ProductsImage { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
-        public DbSet<Basket> Baskets { get; set; }
-        public DbSet<BasketItem> BasketItems { get; set; }
     }
 }

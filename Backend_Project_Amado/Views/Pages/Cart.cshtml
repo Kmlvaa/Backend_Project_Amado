@@ -1,7 +1,10 @@
 ﻿@model Backend_Project_Amado.Models.PagesCartVM
 
 @{
-    var subtotal = Model.Items.Sum(item => item.Item2.Price * item.Item1.Count);
+    var subtotal = Model.Items.Sum(item => item.Item2.Price * item.Item1.Count).ToString(".##");
+}
+@{
+    ViewData["Count"] = Model.Count;
 }
 
 <div class="cart-table-area section-padding-100">
@@ -34,7 +37,7 @@
                                         <h5>@product.Name</h5>
                                     </td>
                                     <td class="price">
-                                        <span>$@(product.Price)</span>
+                                        <span>$@(product.Price.ToString(".##"))/span>
                                     </td>
                                     <td class="qty">
                                         <div class="qty-btn d-flex">
