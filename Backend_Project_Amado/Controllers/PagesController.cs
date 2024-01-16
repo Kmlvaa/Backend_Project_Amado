@@ -38,10 +38,12 @@ namespace Backend_Project_Amado.Controllers
 
                 items.Add(new(basketItem, product));
             }
+            var total = items.Sum(item => item.Item2.Price * item.Item1.Count);
             var model = new PagesCartVM
             {
                 Items = items,
-                Count = items.Count()
+                Count = items.Count(),
+                Total = total
             };
 
             return View(model);

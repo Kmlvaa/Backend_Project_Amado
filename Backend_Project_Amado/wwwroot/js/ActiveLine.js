@@ -1,7 +1,14 @@
-﻿
-    var titleLinks = document.querySelectorAll('.title-link');
-    var brandLinks = document.querySelectorAll('.brand-link');
-    var colorLinks = document.querySelectorAll('.color-link');
+﻿var titleLinks = document.querySelectorAll('.title-link');
+var brandLinks = document.querySelectorAll('.brand-link');
+var colorLinks = document.querySelectorAll('.color-link');
+var navLinks = document.querySelectorAll('.nav-link');
+
+navLinks.forEach(item => {
+    item.addEventListener('click', event => {
+        navLinks.forEach(i => { i.classList.remove('active') })
+        item.classList.add('active')
+    })
+})
 
     titleLinks.forEach(function (link) {
         link.addEventListener('click', function (event) {
@@ -13,9 +20,9 @@
 
             this.classList.add('active');
 
-            var titleid = this.getAttribute('data-titleid');
+            var titleid = this.getAttribute('data-titleId');
 
-            fetch('/shop/sorted?titleid=' + titleid)
+            fetch('/shop/sorted?titleId=' + titleid)
                 .then(response => response.text())
                 .then(data => {
                     var partialContainer = document.getElementById('partials');
@@ -26,8 +33,7 @@
                 });
         });
     });
-       
-    
+
     brandLinks.forEach(function (link) {
             link.addEventListener('click', function (event) {
                 event.preventDefault();
@@ -38,9 +44,9 @@
 
                 this.classList.add('active');
 
-                var brandid = this.getAttribute('data-brandid');
+                var brandid = this.getAttribute('data-brandId');
 
-                fetch('/shop/sorted?brandid=' + brandid)
+                fetch('/shop/sorted?brandId=' + brandid)
                     .then(response => response.text())
                     .then(data => {
                         var partialContainer = document.getElementById('partials');
@@ -57,9 +63,9 @@
                 event.preventDefault();
 
 
-                var colorid = this.getAttribute('data-colorid');
+                var colorid = this.getAttribute('data-colorId');
 
-                fetch('/shop/sorted?colorid=' + colorid)
+                fetch('/shop/sorted?colorId=' + colorid)
                     .then(response => response.text())
                     .then(data => {
                         var partialContainer = document.getElementById('partials');

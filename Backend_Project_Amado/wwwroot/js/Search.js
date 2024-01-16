@@ -16,7 +16,7 @@ searchInput.addEventListener('keyup', (e) => {
 })
 
 function renderSearchResult(searchValue) {
-    fetch(`http://localhost:7172/Shop/search?input=${searchValue}`)
+    fetch(`http://localhost:7172/shop/search?input=${searchValue}`)
         .then(x => x.text())
         .then(x => {
             searchResult.innerHTML = ''

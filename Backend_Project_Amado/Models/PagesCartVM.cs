@@ -6,5 +6,6 @@ namespace Backend_Project_Amado.Models
     {
         public List<(BasketItem, Product)> Items { get; set; }
         public int Count { get; set; }
+        public decimal Total { get; set; }
     }
 }

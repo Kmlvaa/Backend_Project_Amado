@@ -12,7 +12,6 @@
                 <img src="~/img/product-img/@product.Images?.FirstOrDefault()?.Image.Url" alt="">
                 <!-- Hover Content -->
                 <div class="hover-content">
-                        <img class="hover-img" src="~/img/product-img/@product.Images?.FirstOrDefault(p =>p.SortOrder==1)?.Image.Id" alt="">
                     <div class="line"></div>
                     <p>From $@product.Price.ToString(".##")</p>
                     <h4>@product.Name</h4>

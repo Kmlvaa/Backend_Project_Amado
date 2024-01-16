@@ -12,7 +12,7 @@
                     <form asp-controller="Shop" asp-action="Filter">
                         @foreach(var cat in Model.Categories)
                         {
-                            <li class="title-link"><a class="@cat.Name" asp-route-categoryId="@cat.Id" asp-route-page="@Model.CurrentPage" asp-route-view="@Model.ProductCountPerPage">@cat.Name</a></li>
+                            <li class="title-link" data-titleId="@cat.Id"><a class="@cat.Name" asp-route-categoryId="@cat.Id" asp-route-page="@Model.CurrentPage" asp-route-view="@Model.ProductCountPerPage">@cat.Name</a></li>
                         }
                     </form>
                     </ul>
@@ -31,7 +31,7 @@
                     {
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="@brand.Name" asp-action="Filter" asp-route-brandId="@brand.Id" asp-route-page="@Model.CurrentPage" asp-route-view="@Model.ProductCountPerPage">
-                            <label class="form-check-label brand-link" for="@brand.Name">@brand.Name</label>
+                            <label class="form-check-label brand-link" for="@brand.Name" data-brandId="@brand.Id">@brand.Name</label>
                         </div>
                     }
                     </form>
@@ -48,7 +48,7 @@
                     <ul class="d-flex" style="padding-left: 0">
                         @foreach(var color in Model.Colors)
                         {
-                            <li class="color-link"><a class="@color.ColorName" asp-action="Filter" asp-route-brandId="@color.Id" asp-route-page="@Model.CurrentPage" asp-route-view="@Model.ProductCountPerPage"></a></li>
+                            <li class="color-link" data-colorId="@color.Id"><a class="@color.ColorName" asp-action="Filter" asp-route-brandId="@color.Id" asp-route-page="@Model.CurrentPage" asp-route-view="@Model.ProductCountPerPage"></a></li>
                         }
                     </ul>
                     </form>
